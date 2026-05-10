@@ -6,5 +6,6 @@ export const connectDB = async () => {
     return connection;
   } catch (err) {
     console.log(chalk.redBright(err));
+    process.exit(1);
   }
 };

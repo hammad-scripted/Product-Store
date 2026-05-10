@@ -2,14 +2,18 @@ import dotenv from 'dotenv';
 dotenv.config({
   path: './.env',
 });
+import dns from 'node:dns/promises';
+dns.setServers(['1.1.1.1']);
+import productRouter from './routes/product.route.js';
 import express from 'express';
 import chalk from 'chalk';
 import { connectDB } from './db/connection.js';
 const app = express();
 
-app.get('/', (req, res) => {
-  res.json({ message: 'hello world' });
-});
+// middlewares
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use('/api/v1', productRouter);
 
 connectDB()
   .then((connection) => {

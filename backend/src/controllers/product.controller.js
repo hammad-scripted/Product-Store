@@ -1,0 +1,79 @@
+import { Product } from '../models/product.model.js';
+
+export const createProduct = async (req, res) => {
+  try {
+    const { name, price, Image } = req.body;
+
+    if (!name || !price || !Image) {
+      return res.status(400).json({ message: 'All fields are required' });
+    }
+    const existingProduct = await Product.findOne({ name });
+    if (existingProduct) {
+      return res
+        .status(400)
+        .json({ message: 'Product with this name already exists' });
+    }
+
+    if (isNaN(price)) {
+      return res.status(400).json({ message: 'Price must be a number' });
+    }
+
+    const product = await Product.create({
+      name,
+      price,
+      Image,
+    });
+    return res
+      .status(201)
+      .json({ message: 'Product created successfully', product });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: 'Error creating product', error: error.message });
+  }
+};
+
+export const getAllProducts = async (req, res) => {
+  try {
+    const products = await Product.find();
+    if (products.length === 0) {
+      return res.status(404).json({ message: 'No products found' });
+    }
+    return res
+      .status(200)
+      .json({ message: 'Products fetched successfully', products });
+  } catch (error) {
+    return res.status(500).json({ message: 'Error fetching products', error });
+  }
+};
+
+export const getProductById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const product = await Product.findById(id);
+    if (!product) {
+      return res.status(404).json({ message: 'Product not found' });
+    } else {
+      return res
+        .status(200)
+        .json({ message: 'Product fetched successfully', product });
+    }
+  } catch (error) {
+    return res.status(500).json({ message: 'Error fetching product', error });
+  }
+};
+
+export const deleteProduct = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const deletedProduct = await Product.findByIdAndDelete(id);
+
+    if (!deletedProduct) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+    return res.status(200).json({ message: 'Product deleted successfully' });
+  } catch (error) {
+    return res.status(500).json({ message: 'Error deleting product', error });
+  }
+};
