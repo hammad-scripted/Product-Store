@@ -1,5 +1,5 @@
 import { Product } from '../models/product.model.js';
-
+import mongoose from 'mongoose';
 export const createProduct = async (req, res) => {
   try {
     const { name, price, Image } = req.body;
@@ -63,7 +63,7 @@ export const getProductById = async (req, res) => {
   }
 };
 
-export const deleteProduct = async (req, res) => {
+export const deleteProductById = async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -75,5 +75,30 @@ export const deleteProduct = async (req, res) => {
     return res.status(200).json({ message: 'Product deleted successfully' });
   } catch (error) {
     return res.status(500).json({ message: 'Error deleting product', error });
+  }
+};
+
+export const updateProductById = async (req, res) => {
+  const { id } = req.params;
+
+  const product = req.body;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({ message: 'No product with this id' });
+  }
+
+  try {
+    const updatedProduct = await Product.findByIdAndUpdate(id, product, {
+      new: true,
+    });
+    if (!updatedProduct) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+    return res.status(200).json({
+      message: 'Product updated successfully',
+      updatedProduct,
+    });
+  } catch (error) {
+    return res.status(500).json({ message: 'Error updating product', error });
   }
 };
