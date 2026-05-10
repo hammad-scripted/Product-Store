@@ -11,6 +11,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { AddIcon } from '@chakra-ui/icons';
 import { MoonIcon, SunIcon } from '@chakra-ui/icons';
+
 export const Navbar = () => {
   const { colorMode, toggleColorMode } = useColorMode();
   return (
@@ -23,6 +24,7 @@ export const Navbar = () => {
           base: 'column',
           sm: 'row',
         }}
+        marginBottom={3}
       >
         <Text
           fontSize={{
