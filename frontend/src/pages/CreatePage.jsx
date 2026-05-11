@@ -39,6 +39,12 @@ export const CreatePage = () => {
         isClosable: true,
       });
     }
+    // * Reset form
+    setNewProduct({
+      name: '',
+      price: '',
+      Image: '',
+    });
   };
 
   return (
