@@ -54,6 +54,7 @@ export const useProductStore = create((set) => ({
       body: JSON.stringify(updatedProduct),
     });
     const data = await res.json();
+    console.log(data);
     if (data.status === 'error') {
       return { success: false, message: data.message };
     }

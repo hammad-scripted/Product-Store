@@ -109,7 +109,7 @@ export const updateProductById = async (req, res) => {
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(404).json({
-      message: 'No product with this id',
+      message: 'Id is not valid',
       status: 'error',
     });
   }
@@ -123,7 +123,7 @@ export const updateProductById = async (req, res) => {
 
   try {
     const updatedProduct = await Product.findByIdAndUpdate(id, product, {
-      returnDocument: after,
+      new: true,
       runValidators: true,
     });
 
