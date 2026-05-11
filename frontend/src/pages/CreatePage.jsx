@@ -16,9 +16,7 @@ export const CreatePage = () => {
     price: '',
     Image: '',
   });
-  const handleAddProduct = () => {
-    console.log(newProduct);
-  };
+  const handleAddProduct = () => {};
 
   return (
     <Container maxW={'container.sm'}>
