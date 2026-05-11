@@ -69,13 +69,11 @@ export const getProductById = async (req, res) => {
         .status(404)
         .json({ message: 'Product not found', status: 'error' });
     } else {
-      return res
-        .status(200)
-        .json({
-          message: 'Product fetched successfully',
-          product,
-          status: 'success',
-        });
+      return res.status(200).json({
+        message: 'Product fetched successfully',
+        product,
+        status: 'success',
+      });
     }
   } catch (error) {
     return res
@@ -112,12 +110,14 @@ export const updateProductById = async (req, res) => {
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(404).json({
       message: 'No product with this id',
+      status: 'error',
     });
   }
 
   if (Object.keys(product).length === 0) {
     return res.status(400).json({
       message: 'Please provide data to update',
+      status: 'error',
     });
   }
 
@@ -130,12 +130,14 @@ export const updateProductById = async (req, res) => {
     if (!updatedProduct) {
       return res.status(404).json({
         message: 'Product not found',
+        status: 'error',
       });
     }
 
     return res.status(200).json({
       message: 'Product updated successfully',
       updatedProduct,
+      status: 'success',
     });
   } catch (error) {
     return res.status(500).json({

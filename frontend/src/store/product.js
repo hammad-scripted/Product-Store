@@ -32,4 +32,36 @@ export const useProductStore = create((set) => ({
     }
     set({ products: data.products });
   },
+
+  deleteProduct: async (id) => {
+    const res = await fetch(`api/v1/products/${id}`, {
+      method: 'DELETE',
+    });
+    const data = await res.json();
+    if (data.status === 'error') {
+      return { success: false, message: data.message };
+    }
+    set((state) => ({ products: state.products.filter((p) => p._id !== id) }));
+    return { success: true, message: 'Product deleted successfully' };
+  },
+
+  updateProduct: async (id, updatedProduct) => {
+    const res = await fetch(`api/v1/products/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(updatedProduct),
+    });
+    const data = await res.json();
+    if (data.status === 'error') {
+      return { success: false, message: data.message };
+    }
+    set((state) => ({
+      products: state.products.map((p) =>
+        p._id === id ? data.updatedProduct : p,
+      ),
+    }));
+    return { success: true, message: 'Product updated successfully' };
+  },
 }));
