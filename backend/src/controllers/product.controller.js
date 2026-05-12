@@ -5,7 +5,9 @@ export const createProduct = async (req, res) => {
     const { name, price, Image } = req.body;
 
     if (!name || !price || !Image) {
-      return res.status(400).json({ message: 'All fields are required' });
+      return res
+        .status(400)
+        .json({ message: 'All fields are required', status: 'error' });
     }
     const existingProduct = await Product.findOne({ name });
     if (existingProduct) {
